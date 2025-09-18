@@ -7,12 +7,14 @@ import streamlit as st
 
 class DiagnosticEngine:
     def __init__(self):
-        # This line securely retrieves your API key from the environment variable.
-        api_key = os.getenv("GEMINI_API_KEY", "")
+        # --- CORRECTED LINE ---
+        # This line now correctly retrieves your API key by its NAME from the environment variables.
+        api_key = os.getenv("GEMINI_API_KEY")
+        
         if not api_key:
-            st.error("Gemini API key not found. Please set the GEMINI_API_KEY environment variable.")
-            # In a real app, you might raise an exception or handle this gracefully.
-            # For this example, we'll continue but the API calls will fail.
+            st.error("Gemini API key not found. Please set the GEMINI_API_KEY environment variable in your .env file.")
+            # Stop the app from continuing if the key is missing.
+            st.stop()
         
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-1.5-flash')
